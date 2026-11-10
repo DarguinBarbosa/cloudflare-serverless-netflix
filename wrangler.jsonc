@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "netflix-serverless",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-08",
+  // La carpeta public se entrega directamente; el Worker solo se ejecuta
+  // cuando la ruta no corresponde a ningún archivo (las rutas /api).
+  "assets": {
+    "directory": "./public"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "unidad4",
+      "database_id": "073740f5-c2f2-42bd-ab23-cab5ea350263"
+    }
+  ],
+  "observability": { "enabled": true }
+}

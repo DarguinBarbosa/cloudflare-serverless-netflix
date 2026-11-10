@@ -1,0 +1,15 @@
+{
+  "name": "netflix-serverless",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unidad 4: catálogo de Netflix en Cloudflare D1 consultado desde un Worker",
+  "type": "module",
+  "scripts": {
+    "convertir": "node scripts/csv_a_sql.mjs",
+    "local": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

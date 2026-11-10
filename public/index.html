@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Catálogo de Netflix · Serverless</title>
+  <link rel="stylesheet" href="/estilos.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <p class="antetitulo">Unidad 4 · Patrón serverless</p>
+      <h1>Catálogo de Netflix</h1>
+      <p class="subtitulo">
+        Dataset de Kaggle guardado en <strong>Cloudflare D1</strong> y consultado desde un
+        <strong>Worker</strong>. Cada dato de esta página llega de la API <code>/api</code>.
+      </p>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="indicadores" aria-label="Totales">
+      <article class="tarjeta indicador">
+        <span class="etiqueta">Títulos en la base</span>
+        <span class="valor" id="kpi-total">…</span>
+      </article>
+      <article class="tarjeta indicador">
+        <span class="etiqueta"><i class="punto punto-pelicula"></i>Películas</span>
+        <span class="valor" id="kpi-peliculas">…</span>
+        <span class="detalle" id="kpi-peliculas-pct"></span>
+      </article>
+      <article class="tarjeta indicador">
+        <span class="etiqueta"><i class="punto punto-serie"></i>Series</span>
+        <span class="valor" id="kpi-series">…</span>
+        <span class="detalle" id="kpi-series-pct"></span>
+      </article>
+    </section>
+
+    <section class="graficas">
+      <article class="tarjeta grafica-ancha">
+        <h2>Títulos agregados a Netflix por año</h2>
+        <p class="nota">Agrupados por la columna <code>date_added</code>, convertida a fecha en la carga.</p>
+        <div class="lienzo"><canvas id="grafica-anios" aria-label="Títulos agregados por año" role="img"></canvas></div>
+      </article>
+      <article class="tarjeta">
+        <h2>Películas y series</h2>
+        <p class="nota">Conteo por la columna <code>type</code>.</p>
+        <div class="lienzo lienzo-dona"><canvas id="grafica-tipos" aria-label="Títulos por tipo" role="img"></canvas></div>
+      </article>
+      <article class="tarjeta">
+        <h2>Clasificaciones más frecuentes</h2>
+        <p class="nota">Las 8 clasificaciones por edad con más títulos.</p>
+        <ul class="barras" id="lista-clasificaciones"></ul>
+      </article>
+    </section>
+
+    <section class="tarjeta" id="seccion-id">
+      <h2>Buscar por ID</h2>
+      <p class="nota">Consulta <code>/api/titulos/{show_id}</code>, que busca por la clave primaria de la tabla.</p>
+      <form class="fila-formulario" id="form-id" autocomplete="off">
+        <label class="oculto" for="campo-id">ID del título</label>
+        <input id="campo-id" type="text" placeholder="Ejemplo: s1" maxlength="20" required>
+        <button type="submit">Buscar</button>
+      </form>
+      <div id="resultado-id" class="resultado-id" aria-live="polite"></div>
+    </section>
+
+    <section class="tarjeta">
+      <div class="cabecera-seccion">
+        <div>
+          <h2>Explorar el catálogo</h2>
+          <p class="nota">20 títulos por página, ordenados del más reciente al más antiguo. Haz clic en una fila para ver la ficha completa.</p>
+        </div>
+      </div>
+      <form class="fila-formulario" id="form-filtros" autocomplete="off">
+        <label class="oculto" for="filtro-tipo">Tipo</label>
+        <select id="filtro-tipo">
+          <option value="">Películas y series</option>
+          <option value="Movie">Solo películas</option>
+          <option value="TV Show">Solo series</option>
+        </select>
+        <label class="oculto" for="filtro-titulo">Título</label>
+        <input id="filtro-titulo" type="search" placeholder="Buscar por título" maxlength="30">
+        <button type="submit">Filtrar</button>
+      </form>
+      <div class="tabla-desplazable">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Tipo</th><th>Título</th><th>País</th>
+              <th>Agregado</th><th>Estreno</th><th>Clasificación</th><th>Duración</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo-tabla"></tbody>
+        </table>
+      </div>
+      <nav class="paginacion" aria-label="Paginación">
+        <button type="button" id="btn-anterior" class="secundario">Anterior</button>
+        <span id="estado-pagina"></span>
+        <button type="button" id="btn-siguiente" class="secundario">Siguiente</button>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="contenedor pie">
+    Datos: <a href="https://www.kaggle.com/datasets/shivamb/netflix-shows" target="_blank" rel="noopener">Netflix Movies and TV Shows</a>
+    (Kaggle, licencia CC0). Infraestructura: Cloudflare Workers y D1.
+  </footer>
+</body>
+</html>

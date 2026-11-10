@@ -1,0 +1,4 @@
+Aquí copio el archivo netflix_titles.csv que descargo de Kaggle:
+https://www.kaggle.com/datasets/shivamb/netflix-shows
+
+El script scripts/csv_a_sql.mjs lo busca en esta carpeta con ese nombre exacto.
